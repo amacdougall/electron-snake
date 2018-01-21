@@ -19,12 +19,14 @@ function renderGameState() {
   board.addCircle(game.baitCoordinates[0], game.baitCoordinates[1], {fillStyle: "crimson"});
 
   // this area was going to contain inputs you could use to tweak the game properties
-  uiContainer.innerHTML = `
-    <p>Heading: ${game.snake.heading}</p>
-    <p>Length: ${game.snake.body.length}</p>
-    <p>Baits eaten: ${game.snake.body.length - 4}</p>
-    <p>Tick rate: ${game.tickRate}</p>
-  `;
+  if (game.running) {
+    uiContainer.innerHTML = `
+      <p>Heading: ${game.snake.heading}</p>
+      <p>Length: ${game.snake.body.length}</p>
+      <p>Baits eaten: ${game.snake.body.length - 4}</p>
+      <p>Tick rate: ${game.tickRate}</p>
+    `;
+  }
 }
 
 function handleTick() {
@@ -32,7 +34,9 @@ function handleTick() {
 }
 
 function handleLoss() {
-  console.log("YOU HAVE DIED");
+  uiContainer.innerHTML = `
+    <h1 style="color: red">YOU HAVE DIED</h1>
+  `;
 }
 
 // NOTE: I played fast and loose with the application structure in this file,
