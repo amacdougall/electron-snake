@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Example Canvas Application</title>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+    <h1>Example Canvas Application</h1>
+    <div class="application-container">
+      <div class="main-panel canvas-container">
+        <h2>Canvas Area</h2>
+        <canvas id="application-canvas" width="800" height="600" />
+      </div>
+      <div class="main-panel ui-container">
+        <div class="ui-element">
+          First UI element
+        </div>
+        <div class="ui-element">
+          Second UI element
+        </div>
+        <div class="ui-element">
+          Third UI element
+        </div>
+        <div class="ui-element">
+          Fourth UI element
+        </div>
+      </div>
+
+
+      <script>
+        require("./src/application.js");
+      </script>
+    </div>
+  </body>
+</html>
