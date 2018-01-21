@@ -1,48 +1,109 @@
-const Blockboard = require("./src/blockboard");
+const Blockboard = require("./blockboard");
+const Compass = require("./compass");
+const Game = require("./game");
 
-const BLOCK_SIZE = 20;
-const COLUMNS = 20;
-const ROWS = 20;
+const BLOCK_SIZE = 40;
+const COLUMNS = 8;
+const ROWS = 8;
 
 const canvas = document.querySelector("#application-canvas");
+const uiContainer = document.querySelector(".ui-container");
 
-const board = new Blockboard(canvas, {
-  blockSize: BLOCK_SIZE,
-  columns: COLUMNS,
-  rows: ROWS
-});
+let game;
+let board;
 
-let coords = [[0, 0], [0, 1], [1, 0]];
+function renderGameState() {
+  board.clear();
+  board.addSquares(game.snake.body, {fillStyle: "darkolivegreen"});
+  board.addSquare(game.snake.head[0], game.snake.head[1], {fillStyle: "darkgreen"});
+  board.addCircle(game.baitCoordinates[0], game.baitCoordinates[1], {fillStyle: "crimson"});
 
-board.addSquares(coords, {fillStyle: "black"});
+  // this area was going to contain inputs you could use to tweak the game properties
+  uiContainer.innerHTML = `
+    <p>Heading: ${game.snake.heading}</p>
+    <p>Length: ${game.snake.body.length}</p>
+    <p>Baits eaten: ${game.snake.body.length - 4}</p>
+    <p>Tick rate: ${game.tickRate}</p>
+  `;
+}
 
-for (let i = 0; i < 20; i++) {
-  let red = Math.floor(255 * Math.random());
-  let green = Math.floor(255 * Math.random());
-  let blue = Math.floor(255 * Math.random());
-  let color = `rgb(${red}, ${green}, ${blue})`;
-  board.addCircle(Math.floor(20 * Math.random()), i, {
-    strokeStyle: color,
-    // fillStyle: color,
-    lineWidth: 5
+function handleTick() {
+  renderGameState();
+}
+
+function handleLoss() {
+  console.log("YOU HAVE DIED");
+}
+
+// NOTE: I played fast and loose with the application structure in this file,
+// since I was running out of time. We're assigning to global board and game
+// variables without worrying too much about it. In a real application, this
+// "application.js" would have a little more structure.
+function createNewGame() {
+  board = new Blockboard(canvas, {
+    blockSize: BLOCK_SIZE,
+    columns: COLUMNS,
+    rows: ROWS
+  });
+
+  game = new Game({
+    columns: COLUMNS,
+    rows: ROWS,
+    tickRate: 800,
+    tickRateDecayMultiplier: 0.95,
+    tickHandler: handleTick,
+    lossHandler: handleLoss
   });
 }
 
-// so this is all working pretty good
+function startNewGame() {
+  createNewGame();
 
-canvas.onclick = event => {
-  let x = Math.floor(event.offsetX / BLOCK_SIZE);
-  let y = Math.floor(event.offsetY / BLOCK_SIZE);
+  document.onkeydown = event => {
+    switch (event.key) {
+      case "ArrowUp":
+      case "w":
+        if (game.snake.isValidHeading(Compass.NORTH)) {
+          game.snake.heading = Compass.NORTH;
+        }
+        break;
+      case "ArrowRight":
+      case "d":
+        if (game.snake.isValidHeading(Compass.EAST)) {
+          game.snake.heading = Compass.EAST;
+        }
+        break;
+      case "ArrowDown":
+      case "s":
+        if (game.snake.isValidHeading(Compass.SOUTH)) {
+          game.snake.heading = Compass.SOUTH;
+        }
+        break;
+      case "ArrowLeft":
+      case "a":
+        if (game.snake.isValidHeading(Compass.WEST)) {
+          game.snake.heading = Compass.WEST;
+        }
+        break;
+      case "r":
+      case "Enter":
+        startNewGame();
+        break;
+    }
+  }
 
-  board.addSquare(x, y, {fillStyle: "green"});
-};
+  renderGameState();
+  game.start();
+}
 
+createNewGame();
+renderGameState();
+
+// this handler will be used until a new game is started
 document.onkeydown = event => {
-  /*
-  console.log("onkeydown: code \"%s\", key \"%s\", charcode %s, keycode %s",
-    event.code, event.key, event.charCode, event.keyCode);
-  */
-  // in Chrome, at least, you can check event.key for:
-  // "ArrowRight", and left, etc
-  // "w", and asd, etc
-};
+  switch (event.key) {
+    case "Enter":
+      startNewGame();
+      break;
+  }
+}

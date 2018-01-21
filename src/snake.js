@@ -89,6 +89,22 @@ class Snake {
   }
 
   /**
+   * Returns the [x, y] coordinate pair for the next square the snake will reach.
+   */
+  get destination() {
+    switch (this.heading) {
+      case Compass.NORTH:
+        return [this.head[0], this.head[1] - 1];
+      case Compass.EAST:
+        return [this.head[0] + 1, this.head[1]];
+      case Compass.SOUTH:
+        return [this.head[0], this.head[1] + 1];
+      case Compass.WEST:
+        return [this.head[0] - 1, this.head[1]];
+    }
+  }
+
+  /**
    * Moves the snake one square in the current heading. Invalid movement is
    * possible: game code is responsible for collision detection.
    */
@@ -104,20 +120,7 @@ class Snake {
    * snake will grow by one segment. Use this when eating the bait.
    */
   advanceHead() {
-    switch (this.heading) {
-      case Compass.NORTH:
-        this._body.push([this.head[0], this.head[1] - 1]);
-        break;
-      case Compass.EAST:
-        this._body.push([this.head[0] + 1, this.head[1]]);
-        break;
-      case Compass.SOUTH:
-        this._body.push([this.head[0], this.head[1] + 1]);
-        break;
-      case Compass.WEST:
-        this._body.push([this.head[0] - 1, this.head[1]]);
-        break;
-    }
+    this._body.push(this.destination);
   }
 }
 

@@ -3,7 +3,7 @@ body {
 }
 
 #application-canvas {
-
+  border: thin black solid;
 }
 
 .application-container {
@@ -16,17 +16,4 @@ body {
 .main-panel {
   flex-grow: 1;
   flex-basis: 5rem
-}
-
-.ui-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-
-.ui-element {
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 2rem;
 }
