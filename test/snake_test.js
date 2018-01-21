@@ -2,9 +2,6 @@ const assert = require("assert");
 const Compass = require("../src/compass");
 const Snake = require("../src/snake");
 
-/** Convenience method. */
-const last = array => array[array.length - 1];
-
 describe("the Snake constructor", function() {
   beforeEach(function() {
     this.snake = new Snake();
@@ -103,5 +100,56 @@ describe("Snake.facing getter", function() {
       [1, 0] // head; one north of shoulders
     ];
     assert.equal(Compass.NORTH, this.snake.facing);
+  });
+});
+
+describe("Snake.advanceHead", function() {
+  describe("using the default heading", function() {
+    it("should place the new head one square in the current heading", function() {
+      const snake = new Snake();
+      snake.advanceHead();
+      assert.deepEqual([4, 0], snake.head);
+    });
+  });
+
+  describe("using a new heading", function() {
+    it("should place the new head one square in the current heading", function() {
+      const snake = new Snake();
+      snake.heading = Compass.SOUTH;
+      snake.advanceHead();
+      assert.deepEqual([3, 1], snake.head);
+    });
+  });
+});
+
+describe("Snake.move", function() {
+  beforeEach(function() {
+    this.snake = new Snake();
+  });
+
+  describe("using the default heading", function() {
+    it("should place the new head one square in the current heading", function() {
+      this.snake.move();
+      assert.deepEqual([4, 0], this.snake.head);
+    });
+
+    it("should move the snake's tail", function() {
+      this.snake.move();
+      assert.deepEqual([1, 0], this.snake.body[0]);
+    });
+  });
+
+  describe("using a new heading", function() {
+    it("should place the new head one square in the current heading", function() {
+      this.snake.heading = Compass.SOUTH;
+      this.snake.move();
+      assert.deepEqual([3, 1], this.snake.head);
+    });
+
+    it("should move the snake's tail", function() {
+      this.snake.heading = Compass.SOUTH;
+      this.snake.move();
+      assert.deepEqual([1, 0], this.snake.body[0]);
+    });
   });
 });

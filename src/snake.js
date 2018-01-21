@@ -34,6 +34,17 @@ class Snake {
     throw new Error("Attempted to set read-only value Snake.body.");
   }
 
+  /**
+   * The coordinates representing the location of the snake's head.
+   */
+  get head() {
+    return this._body[this._body.length - 1];
+  }
+
+  set head(value) {
+    throw new Error("Attempted to set read-only value Snake.head.");
+  }
+
   get heading() {
     return this._heading;
   }
@@ -75,6 +86,38 @@ class Snake {
    */
   isValidHeading(value) {
     return value !== Compass.inverse(this.facing);
+  }
+
+  /**
+   * Moves the snake one square in the current heading. Invalid movement is
+   * possible: game code is responsible for collision detection.
+   */
+  move() {
+    this.advanceHead();
+    this._body.shift(); // remove previous tail segment
+  }
+
+  /**
+   * Moves the snake's head one square in the current heading. Invalid movement
+   * is possible: game code is responsible for collision detection. Unlike
+   * move(), this method does NOT remove the previous tail. This means that the
+   * snake will grow by one segment. Use this when eating the bait.
+   */
+  advanceHead() {
+    switch (this.heading) {
+      case Compass.NORTH:
+        this._body.push([this.head[0], this.head[1] - 1]);
+        break;
+      case Compass.EAST:
+        this._body.push([this.head[0] + 1, this.head[1]]);
+        break;
+      case Compass.SOUTH:
+        this._body.push([this.head[0], this.head[1] + 1]);
+        break;
+      case Compass.WEST:
+        this._body.push([this.head[0] - 1, this.head[1]]);
+        break;
+    }
   }
 }
 
