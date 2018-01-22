@@ -4,7 +4,7 @@ const _ = require("lodash");
 const DEFAULT_COLUMNS = 20;
 const DEFAULT_ROWS = 20;
 
-const DEFAULT_TICK_RATE = 1000;
+const DEFAULT_TICK_RATE = 800;
 const DEFAULT_TICK_RATE_DECAY_MULTIPLIER = 0.95;
 
 /**

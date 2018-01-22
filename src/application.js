@@ -53,8 +53,6 @@ function createNewGame() {
   game = new Game({
     columns: COLUMNS,
     rows: ROWS,
-    tickRate: 800,
-    tickRateDecayMultiplier: 0.95,
     tickHandler: handleTick,
     lossHandler: handleLoss
   });

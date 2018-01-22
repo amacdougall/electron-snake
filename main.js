@@ -25,7 +25,7 @@ function createWindow() {
   })
 
   // open devtools for interactive debugging
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 }
 
 // This method will be called when Electron has finished
