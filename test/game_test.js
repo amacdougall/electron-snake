@@ -1,4 +1,5 @@
 const assert = require("assert");
+const Compass = require("../src/compass");
 const Game = require("../src/game");
 const Snake = require("../src/snake");
 
@@ -48,5 +49,39 @@ describe("Game.chooseBaitCoordinates", function() {
 
     // now there is only one possible bait square
     assert.deepEqual([4, 0], game.chooseBaitCoordinates());
+  });
+});
+
+describe("Game.snakeWillHitWall", function() {
+  beforeEach(function() {
+    this.game = new Game({columns: 10, rows: 10});
+  });
+
+  it("crashes on north wall", function() {
+    this.game.snake.head[0] = 0;
+    this.game.snake.head[1] = 0;
+    this.game.snake.heading = Compass.NORTH;
+    assert(this.game.snakeWillHitWall);
+  });
+
+  it("crashes on south wall", function() {
+    this.game.snake.head[0] = 9;
+    this.game.snake.head[1] = 9;
+    this.game.snake.heading = Compass.SOUTH;
+    assert(this.game.snakeWillHitWall);
+  });
+
+  it("crashes on west wall", function() {
+    this.game.snake.head[0] = 0;
+    this.game.snake.head[1] = 0;
+    this.game.snake.heading = Compass.WEST;
+    assert(this.game.snakeWillHitWall);
+  });
+
+  it("crashes on east wall", function() {
+    this.game.snake.head[0] = 9;
+    this.game.snake.head[1] = 9;
+    this.game.snake.heading = Compass.EAST;
+    assert(this.game.snakeWillHitWall);
   });
 });

@@ -86,8 +86,10 @@ class Game {
   }
 
   get snakeWillHitWall() {
-    return this.snake.destination[0] >= this.columns ||
-           this.snake.destination[1] >= this.rows;
+    return this.snake.destination[0] >= this.columns || // 
+           this.snake.destination[0] < 0 ||
+           this.snake.destination[1] >= this.rows ||
+           this.snake.destination[1] < 0;
   }
 
   get snakeWillHitSelf() {
